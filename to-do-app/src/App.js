@@ -1,14 +1,14 @@
 import './App.css';
-import {Avatar, Box, Center, ChakraProvider, Stack, Tag, TagLabel, CloseButton} from "@chakra-ui/react"
+import {Avatar, Box, Center, ChakraProvider, Stack, Tag, TagLabel, CloseButton, Badge} from "@chakra-ui/react"
 import AddIcon from '@material-ui/icons/Add';
 import {useState} from "react";
 
 function App() {
 
     const [tasks, setTasks] = useState([
-        { importance: "", task: "John Doe" },
-        { importance: "", task: "Victor Wayne" },
-        { importance: "", task: "Jane Doe" },
+        {important: false, task: "John Doe"},
+        {important: true, task: "Victor Wayne"},
+        {important: true, task: "Jane Doe"},
     ]);
 
     return (
@@ -36,6 +36,9 @@ function App() {
                                 <TagLabel className="tasks__taskTitle">
                                     {task.task}
                                 </TagLabel>
+                                {task.important ?
+                                    <Badge colorScheme="red">Important</Badge> : <></>
+                                }
                             </Tag>
                         </Stack>
                     ))}

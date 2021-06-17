@@ -24,9 +24,8 @@
     margin-top: 20px;
 }
 
-.tasks__task__taskTitle{
-    margin-left: 30px;
-    text-align: center;
+.tasks__taskTitle{
+    margin: 0 10px 0 10px;
 }
 
 .tasks__body > {
