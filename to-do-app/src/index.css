@@ -1,0 +1,12 @@
+* {
+    font-family: "Poppins SemiBold";
+}
+
+h1 {
+    font-size: 30px !important;
+}
+
+@font-face {
+    font-family: "Poppins SemiBold";
+    src: url("./assets/fonts/Poppins-SemiBold.ttf");
+}
