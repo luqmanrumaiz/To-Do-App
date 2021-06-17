@@ -11,6 +11,10 @@ function App() {
         {important: true, task: "Jane Doe"},
     ]);
 
+    const deleteTask = (task) => {
+
+    }
+
     return (
         <ChakraProvider className="tasks">
             <Box>
