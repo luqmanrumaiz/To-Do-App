@@ -14,3 +14,21 @@
 .my-float{
     margin-top:20px;
 }
+
+.tasks__body{
+    flex: 1;
+    padding: 20px;
+}
+
+.tasks__task{
+    margin-top: 20px;
+}
+
+.tasks__task__taskTitle{
+    margin-left: 30px;
+    text-align: center;
+}
+
+.tasks__body > {
+     margin-top: 5%;
+}

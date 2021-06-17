@@ -1,16 +1,18 @@
 import './App.css';
-import {Box, Center, ChakraProvider} from "@chakra-ui/react"
+import {Avatar, Box, Center, ChakraProvider, Stack, Tag, TagLabel, CloseButton} from "@chakra-ui/react"
 import AddIcon from '@material-ui/icons/Add';
 import {useState} from "react";
 
 function App() {
 
-    const [tasks, setTasks] = useState([]);
-
-    
+    const [tasks, setTasks] = useState([
+        { importance: "", task: "John Doe" },
+        { importance: "", task: "Victor Wayne" },
+        { importance: "", task: "Jane Doe" },
+    ]);
 
     return (
-        <ChakraProvider>
+        <ChakraProvider className="tasks">
             <Box>
                 <Center bg="teal" h="120px" color="white">
                     <h1>To-Do App</h1>
@@ -20,8 +22,27 @@ function App() {
             {tasks == null ? (
                 <h1>No Tasks</h1>
             ) : (
-                <h1>Tasks</h1>
+                <div className="tasks__body">
+                    {tasks.map((task) => (
+                        <Stack className="tasks__task">
+                            <Tag
+                                padding="10px"
+                                size="md"
+                                colorScheme="teal"
+                                borderRadius="full"
+                            >
+                                <CloseButton color="red"/>
+
+                                <TagLabel className="tasks__taskTitle">
+                                    {task.task}
+                                </TagLabel>
+                            </Tag>
+                        </Stack>
+                    ))}
+
+                </div>
             )}
+
 
             <a href="#" className="float">
                 <AddIcon className="my-float"/>
