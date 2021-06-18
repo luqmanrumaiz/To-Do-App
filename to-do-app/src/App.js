@@ -3,25 +3,33 @@ import {Avatar, Box, Center, ChakraProvider, Stack, Tag, TagLabel, CloseButton, 
 import AddIcon from '@material-ui/icons/Add';
 import {useEffect, useState} from "react";
 import {db} from "./firebase";
+import firebase from "firebase";
 
 function App() {
 
-    const [tasks, setTasks] = useState([
-        {important: false, task: "John Doe"},
-        {important: true, task: "Victor Wayne"},
-        {important: true, task: "Jane Doe"},
-    ]);
+    const [tasks, setTasks] = useState([]);
 
     const deleteTask = (task) => {
 
     }
-    
+
+    const addTask = (event) => {
+        event.preventDefault();
+
+        db.collection("tasks").add({
+            task: "Thank You",
+            important: true,
+            timestamp: firebase.firestore.FieldValue.serverTimestamp()
+        })
+    }
 
     useEffect(() => {
-        db.collection("tasks").onSnapshot(snapshot => {
-
-            setTasks(snapshot.docs.map(doc => doc.data()))
-        })
+        db
+            .collection("tasks")
+            .orderBy("timestamp", "desc")
+            .onSnapshot(snapshot => {
+                setTasks(snapshot.docs.map(doc => doc.data()))
+            })
     }, []);
 
     return (
@@ -60,7 +68,7 @@ function App() {
             )}
 
 
-            <a href="#" className="float">
+            <a onClick={addTask} className="float">
                 <AddIcon className="my-float"/>
             </a>
         </ChakraProvider>
