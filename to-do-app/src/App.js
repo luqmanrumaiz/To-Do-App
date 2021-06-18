@@ -1,7 +1,8 @@
 import './App.css';
 import {Avatar, Box, Center, ChakraProvider, Stack, Tag, TagLabel, CloseButton, Badge} from "@chakra-ui/react"
 import AddIcon from '@material-ui/icons/Add';
-import {useState} from "react";
+import {useEffect, useState} from "react";
+import {db} from "./firebase";
 
 function App() {
 
@@ -14,6 +15,14 @@ function App() {
     const deleteTask = (task) => {
 
     }
+    
+
+    useEffect(() => {
+        db.collection("tasks").onSnapshot(snapshot => {
+
+            setTasks(snapshot.docs.map(doc => doc.data()))
+        })
+    }, []);
 
     return (
         <ChakraProvider className="tasks">
