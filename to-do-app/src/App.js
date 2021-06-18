@@ -9,10 +9,6 @@ function App() {
 
     const [tasks, setTasks] = useState([]);
 
-    const deleteTask = (task) => {
-
-    }
-
     const addTask = (event) => {
         event.preventDefault();
 
@@ -24,11 +20,12 @@ function App() {
     }
 
     useEffect(() => {
+
         db
             .collection("tasks")
             .orderBy("timestamp", "desc")
             .onSnapshot(snapshot => {
-                setTasks(snapshot.docs.map(doc => doc.data()))
+                setTasks(snapshot.docs.map(doc => ({id: doc.id, task: doc.data()})))
             })
     }, []);
 
@@ -52,12 +49,22 @@ function App() {
                                 colorScheme="teal"
                                 borderRadius="full"
                             >
-                                <CloseButton color="red"/>
+                                <CloseButton onClick={
+                                    event => {
+                                        event.preventDefault();
+
+                                        db.collection("tasks").doc(task.id).delete().then(() => {
+                                            console.log("Document successfully deleted!");
+                                        }).catch((error) => {
+                                            console.error("Error removing document: ", error);
+                                        });
+                                    }
+                                } color="red"/>
 
                                 <TagLabel className="tasks__taskTitle">
-                                    {task.task}
+                                    {task.task.task}
                                 </TagLabel>
-                                {task.important ?
+                                {task.task.important ?
                                     <Badge colorScheme="red">Important</Badge> : <></>
                                 }
                             </Tag>
