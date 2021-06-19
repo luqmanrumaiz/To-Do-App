@@ -1,22 +1,54 @@
 import './App.css';
-import {Avatar, Box, Center, ChakraProvider, Stack, Tag, TagLabel, CloseButton, Badge} from "@chakra-ui/react"
+import {
+    Box,
+    Center,
+    ChakraProvider,
+    Stack,
+    Tag,
+    TagLabel,
+    CloseButton,
+    Badge,
+    Button,
+    Modal,
+    ModalOverlay,
+    ModalContent,
+    ModalHeader,
+    ModalFooter,
+    ModalBody,
+    ModalCloseButton,
+    Input,
+    Switch,
+    Flex,
+    Spacer,
+    FormControl,
+    FormLabel,
+    useDisclosure
+} from "@chakra-ui/react"
 import AddIcon from '@material-ui/icons/Add';
 import {useEffect, useState} from "react";
 import {db} from "./firebase";
 import firebase from "firebase";
+import React from "react";
 
 function App() {
 
+    const { isOpen, onOpen, onClose } = useDisclosure()
     const [tasks, setTasks] = useState([]);
+    const [checked, setChecked] = useState(false);
+    const [value, setValue] = React.useState("");
+    const handleChange = (event) => setValue(event.target.value);
 
     const addTask = (event) => {
         event.preventDefault();
 
         db.collection("tasks").add({
-            task: "Thank You",
-            important: true,
+            task: value,
+            important: checked,
             timestamp: firebase.firestore.FieldValue.serverTimestamp()
         })
+
+        setChecked(false);
+        onClose();
     }
 
     useEffect(() => {
@@ -69,15 +101,53 @@ function App() {
                                 }
                             </Tag>
                         </Stack>
-                    ))}
-
+                        ))}
                 </div>
             )}
 
-
-            <a onClick={addTask} className="float">
+            <a onClick={onOpen} className="float">
                 <AddIcon className="my-float"/>
             </a>
+
+            <Modal isOpen={isOpen} onClose={onClose}>
+                <ModalOverlay />
+                <ModalContent>
+                    <ModalHeader>Add a Task</ModalHeader>
+
+                    <ModalCloseButton />
+
+                    <ModalBody>
+                        <Input
+                            placeholder="Task Description"
+                            size="lg"
+                            value={value}
+                            onChange={handleChange}
+                        />
+                    </ModalBody>
+
+                    <Flex padding="20px">
+                        <FormControl display="flex" alignItems="center">
+                            <FormLabel htmlFor="email-alerts" mb="0">
+                                Important
+                            </FormLabel>
+                            <Switch
+                                colorScheme="red"
+                                id="importantSwitch"
+                                onChange={() => setChecked(true)}
+                                checked={checked}
+                            />
+                        </FormControl>
+                        <Spacer />
+                        <Button colorScheme="red" mr={3} onClick={() => {
+                            onClose();
+                            setChecked(false);
+                        }}>
+                            Close
+                        </Button>
+                        <Button variant="ghost" onClick={(event) => addTask(event)}>Add</Button>
+                    </Flex>
+                </ModalContent>
+            </Modal>
         </ChakraProvider>
     );
 }
