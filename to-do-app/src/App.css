@@ -31,3 +31,19 @@
 .tasks__body > {
      margin-top: 5%;
 }
+
+.tasks__skeleton {
+    height: 100vh;
+    background-color: lightgrey;
+    display: grid;
+    place-items: center;
+}
+
+.tasks__skeleton > h1 {
+    display: grid;
+    place-items: center;
+    padding: 100px;
+    margin: 0 5% 0 5%;
+    text-align: center;
+    color: #696969;
+}

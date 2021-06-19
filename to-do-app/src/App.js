@@ -22,6 +22,7 @@ import {
     Spacer,
     FormControl,
     FormLabel,
+    Skeleton,
     useDisclosure
 } from "@chakra-ui/react"
 import AddIcon from '@material-ui/icons/Add';
@@ -32,7 +33,7 @@ import React from "react";
 
 function App() {
 
-    const { isOpen, onOpen, onClose } = useDisclosure()
+    const {isOpen, onOpen, onClose} = useDisclosure()
     const [tasks, setTasks] = useState([]);
     const [checked, setChecked] = useState(false);
     const [value, setValue] = React.useState("");
@@ -40,6 +41,8 @@ function App() {
 
     const addTask = (event) => {
         event.preventDefault();
+
+        console.log(tasks.length)
 
         db.collection("tasks").add({
             task: value,
@@ -69,8 +72,10 @@ function App() {
                 </Center>
             </Box>
 
-            {tasks == null ? (
-                <h1>No Tasks</h1>
+            {tasks.length === 0 ? (
+                <Skeleton isLoaded className="tasks__skeleton">
+                    <h1>No Tasks added</h1>
+                </Skeleton>
             ) : (
                 <div className="tasks__body">
                     {tasks.map((task) => (
@@ -101,7 +106,7 @@ function App() {
                                 }
                             </Tag>
                         </Stack>
-                        ))}
+                    ))}
                 </div>
             )}
 
@@ -109,12 +114,15 @@ function App() {
                 <AddIcon className="my-float"/>
             </a>
 
-            <Modal isOpen={isOpen} onClose={onClose}>
-                <ModalOverlay />
+            <Modal isOpen={isOpen} onClose={() => {
+                onClose();
+                setChecked(false);
+            }}>
+                <ModalOverlay/>
                 <ModalContent>
                     <ModalHeader>Add a Task</ModalHeader>
 
-                    <ModalCloseButton />
+                    <ModalCloseButton/>
 
                     <ModalBody>
                         <Input
@@ -137,7 +145,7 @@ function App() {
                                 checked={checked}
                             />
                         </FormControl>
-                        <Spacer />
+                        <Spacer/>
                         <Button colorScheme="red" mr={3} onClick={() => {
                             onClose();
                             setChecked(false);
